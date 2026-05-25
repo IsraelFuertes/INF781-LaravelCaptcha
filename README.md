@@ -1,58 +1,275 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# INF781 - Laravel CAPTCHA Lab
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyecto desarrollado en Laravel 13 para implementar mecanismos de protección contra bots utilizando:
 
-## About Laravel
+- Google reCAPTCHA v2
+- CAPTCHA dinámico en login
+- Honeypot
+- Rate limiting
+- Validaciones y tests automatizados
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Descripción del proyecto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+El objetivo de este laboratorio es implementar diferentes mecanismos de seguridad en formularios web para prevenir:
 
-## Learning Laravel
+- Bots automatizados
+- Spam
+- Fuerza bruta
+- Automatización de formularios
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+El sistema protege:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Registro de usuarios
+- Inicio de sesión
+- Formulario de contacto
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+# Requisitos
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Software requerido
+
+- PHP 8.3+
+- Composer
+- PostgreSQL
+- Node.js
+- NPM
+- Laravel 13
+
+---
+
+# Instalación del proyecto
+
+## 1. Clonar repositorio
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/TU_USUARIO/INF781-LaravelCaptcha.git
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 2. Entrar al proyecto
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cd INF781-LaravelCaptcha
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 3. Instalar dependencias
 
-## Security Vulnerabilities
+```bash
+composer install
+npm install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 4. Configurar entorno
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Copiar archivo:
+
+```bash
+cp .env.example .env
+```
+
+---
+
+## 5. Configurar base de datos
+
+Editar `.env`
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=inf781_captcha
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+```
+
+---
+
+# Configuración de Google reCAPTCHA
+
+## 1. Obtener claves
+
+Ingresar a:
+
+https://www.google.com/recaptcha/admin
+
+---
+
+## 2. Crear sitio reCAPTCHA v2
+
+Seleccionar:
+
+- reCAPTCHA v2
+- "No soy un robot"
+
+---
+
+## 3. Configurar claves en `.env`
+
+```env
+RECAPTCHA_SITE_KEY=6LdffPksAAAAAIGJ9KlsyW6W9MPfGXNnXDktjJyU
+RECAPTCHA_SECRET_KEY=6LdffPksAAAAAB1_gnW1TEfG3z0ZybKDhT-rFTFn
+
+```
+
+---
+
+# Generar aplicación
+
+## Generar APP_KEY
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## Ejecutar migraciones
+
+```bash
+php artisan migrate
+```
+
+---
+
+## Ejecutar servidor Laravel
+
+```bash
+php artisan serve
+```
+
+---
+
+# Ejecutar tests
+
+```bash
+php artisan test --filter=CaptchaProtectionTest
+```
+
+---
+# Persistencia en Base de Datos
+
+## Usuarios registrados
+
+![Users](screenshots/users-table.png)
+
+---
+
+## Mensajes del formulario de contacto
+
+![Contacts](screenshots/contacts-table.png)
+
+# Formularios protegidos
+
+## Registro protegido con Google reCAPTCHA
+
+- Validación anti-bot
+- Protección contra registros automáticos
+
+![Register](screenshots/register.png)
+
+---
+
+## Login protegido con CAPTCHA dinámico
+
+- CAPTCHA visual
+- Validación manual del código
+
+![Login](screenshots/login.png)
+
+---
+
+## Formulario de contacto protegido
+
+- Honeypot
+- Rate limiting
+- CAPTCHA visual
+
+![Contact](screenshots/contact.png)
+
+---
+
+# Tests automatizados
+
+Pruebas implementadas:
+
+- Validación CAPTCHA
+- Protección Honeypot
+- Protección Rate Limiting
+
+![Tests](screenshots/tests.png)
+
+---
+
+# Análisis crítico
+
+## Amenazas mitigadas
+
+### Registro
+
+- Bots automáticos
+- Creación masiva de cuentas
+- Spam
+
+### Login
+
+- Fuerza bruta básica
+- Scripts automatizados
+- Bots de autenticación
+
+### Contacto
+
+- Spam automatizado
+- Flooding
+- Bots de formularios
+
+---
+
+# Comparación de mecanismos CAPTCHA
+
+| Mecanismo | Ventajas | Desventajas |
+|---|---|---|
+| Google reCAPTCHA | Alta seguridad | Dependencia externa |
+| CAPTCHA local | Mayor privacidad | Menor seguridad |
+| Honeypot | Invisible al usuario | Bots avanzados pueden evitarlo |
+
+---
+
+# Vulnerabilidades residuales
+
+Aunque se implementaron mecanismos de protección, aún pueden existir amenazas como:
+
+- OCR avanzado
+- Bots con IA
+- Servicios humanos de resolución CAPTCHA
+- Ataques distribuidos
+
+---
+
+# Conclusiones
+
+El laboratorio permitió comprender la importancia de proteger formularios web mediante múltiples capas de seguridad.
+
+Se implementaron mecanismos anti-bot tanto visuales como invisibles para reducir automatizaciones maliciosas y mejorar la seguridad de la aplicación.
+
+---
+
+# Autor
+
+- Nombre: JHON ISRAEL FUERTES
+- Materia: INF781 Seguridad de Software
+- Universidad: UATF
+- Gestión: 2026
+
+---
+
+# Licencia
+
+Proyecto académico desarrollado únicamente con fines educativos.
