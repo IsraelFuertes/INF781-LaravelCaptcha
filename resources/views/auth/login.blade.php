@@ -32,7 +32,7 @@
 
         </div>
 
-        <!-- PASSWORD -->
+        <!-- Contraseña -->
         <div class="mt-4">
 
             <x-input-label
